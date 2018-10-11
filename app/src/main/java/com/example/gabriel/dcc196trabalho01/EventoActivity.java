@@ -1,0 +1,21 @@
+package com.example.gabriel.dcc196trabalho01;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.widget.Button;
+
+public class EventoActivity extends AppCompatActivity {
+
+    private Button btnCadastrarEvento;
+    private RecyclerView rvListaEventos;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_evento);
+
+        btnCadastrarEvento = findViewById(R.id.btn_cadastrarEvento);
+        rvListaEventos = findViewById(R.id.rv_listaEventos);
+    }
+}
