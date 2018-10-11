@@ -1,10 +1,14 @@
 package com.example.gabriel.dcc196trabalho01;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int REQUEST_PARTICIPANTE = 1;
 
     private Button btnParticipantes;
     private Button btnEventos;
@@ -16,5 +20,13 @@ public class MainActivity extends AppCompatActivity {
 
         btnParticipantes = findViewById(R.id.btn_participantes);
         btnEventos = findViewById(R.id.btn_eventos);
+
+        btnParticipantes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ParticipanteActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
