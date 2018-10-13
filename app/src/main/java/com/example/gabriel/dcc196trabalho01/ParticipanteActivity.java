@@ -11,6 +11,7 @@ import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,17 +32,20 @@ public class ParticipanteActivity extends AppCompatActivity {
         btnCadastrarParticipante = findViewById(R.id.btn_cadastrarParticipante);
         txtTotalParticipantes = findViewById(R.id.txt_totalParticipantes);
 
-        List<Participante> participantes = new ArrayList<>();
-        Participante p1 = new Participante("Mateus", "mateusgon57@gmail.com", "00000000000", null);
-        Participante p2 = new Participante("Gabriel", "gabrielmsanta97@gmail.com", "00000000000", null);
-        participantes.add(p1);
-        participantes.add(p2);
-
         rvListaParticipantes = (RecyclerView) findViewById(R.id.rv_listaParticipantes);
         rvListaParticipantes.setLayoutManager(new LinearLayoutManager(this));
         rvListaParticipantes.setAdapter(new ParticipanteAdapter(ModelDAO.getParticipanteInstance()));
 
         final ParticipanteAdapter adapter = new ParticipanteAdapter(ModelDAO.getParticipanteInstance());
+        adapter.setOnClickListener(new ParticipanteAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                //deve aparecer a janela com os detalhes
+                Toast.makeText(ParticipanteActivity.this, "oi", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        rvListaParticipantes.setAdapter(adapter);
 
         int total = ModelDAO.getParticipanteInstance().size();
         txtTotalParticipantes.setText("Total de Participantes: " + total);

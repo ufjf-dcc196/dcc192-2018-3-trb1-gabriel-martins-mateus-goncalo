@@ -9,4 +9,7 @@
     <string name="hintDescricao">Descrição do evento</string>
     <string name="hintTempo">Horário</string>
     <string name="hintData">Data</string>
+    <string name="hintLocal">Local</string>
+    <string name="hintNumMaxInscritos">Número máximo de inscritos</string>
+    <string name="hintDataHora2">Data/hora (dd/mm/aaaa hh:mm)</string>
 </resources>
