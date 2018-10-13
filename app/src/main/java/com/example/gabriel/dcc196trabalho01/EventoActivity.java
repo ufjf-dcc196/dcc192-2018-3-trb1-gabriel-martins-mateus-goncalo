@@ -1,6 +1,8 @@
 package com.example.gabriel.dcc196trabalho01;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,8 @@ public class EventoActivity extends AppCompatActivity {
     private Button btnCadastrarEvento;
     private RecyclerView rvListaEventos;
     private TextView txtTotalEventos;
+
+    private int totalEventos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,5 +36,14 @@ public class EventoActivity extends AppCompatActivity {
                 startActivityForResult(intent, EventoActivity.REQUEST_CADEVENTO);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == EventoActivity.REQUEST_CADEVENTO && resultCode == Activity.RESULT_OK){
+            totalEventos++;
+            txtTotalEventos.setText("Total de Eventos: " + totalEventos);
+        }
     }
 }
