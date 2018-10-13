@@ -7,4 +7,6 @@
     <string name="hintDataHora">Data/Hora</string>
     <string name="hintFacilitador">Facilitador</string>
     <string name="hintDescricao">Descrição do evento</string>
+    <string name="hintTempo">Horário</string>
+    <string name="hintData">Data</string>
 </resources>

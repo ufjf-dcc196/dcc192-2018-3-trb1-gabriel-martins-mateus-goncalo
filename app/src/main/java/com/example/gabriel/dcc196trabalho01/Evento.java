@@ -5,6 +5,7 @@ import java.util.List;
 public class Evento {
 
     private String nome;
+    //private
     private List<Participante> participanteList;
     private Integer numMaximoInscritos;
     private Integer numInscritos;

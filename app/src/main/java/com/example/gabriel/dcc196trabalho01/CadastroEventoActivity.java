@@ -22,7 +22,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
         btnConfirmaCadEvento = findViewById(R.id.btn_confirmaCadEvento);
         txtTitulo = findViewById(R.id.txt_titulo);
-        txtData = findViewById(R.id.txt_data);
+        txtData = findViewById(R.id.txt_dataHora);
         txtFacilitador = findViewById(R.id.txt_facilitador);
         txtDescicao = findViewById(R.id.txt_descricao);
 
