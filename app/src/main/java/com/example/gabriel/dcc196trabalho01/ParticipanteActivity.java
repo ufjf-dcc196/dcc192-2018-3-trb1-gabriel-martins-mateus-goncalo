@@ -1,6 +1,8 @@
 package com.example.gabriel.dcc196trabalho01;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,8 @@ public class ParticipanteActivity extends AppCompatActivity {
     private Button btnCadastrarParticipante;
     private RecyclerView rvListaParticipantes;
     private TextView txtTotalParticipantes;
+
+    private int totalParticipantes = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,5 +36,14 @@ public class ParticipanteActivity extends AppCompatActivity {
                 startActivityForResult(intent, ParticipanteActivity.REQUEST_CADPARTICIPANTE);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ParticipanteActivity.REQUEST_CADPARTICIPANTE && resultCode == Activity.RESULT_OK){
+            totalParticipantes++;
+            txtTotalParticipantes.setText("Total de Participantes: " + totalParticipantes);
+        }
     }
 }
