@@ -41,7 +41,7 @@ public class ParticipanteActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 //deve aparecer a janela com os detalhes
-                Toast.makeText(ParticipanteActivity.this, "oi", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ParticipanteActivity.this, "Oi", Toast.LENGTH_SHORT).show();
             }
         });
 

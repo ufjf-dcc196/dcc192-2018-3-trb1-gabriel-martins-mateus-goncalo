@@ -12,4 +12,7 @@
     <string name="hintLocal">Local</string>
     <string name="hintNumMaxInscritos">Número máximo de inscritos</string>
     <string name="hintDataHora2">Data/hora (dd/mm/aaaa hh:mm)</string>
+    <string name="eventosCadastrados">Lista de eventos cadastrados</string>
+    <string name="eventosDisponiveis">Lista de eventos disponíveis</string>
+    <string name="btnEdtInfo">Editar</string>
 </resources>
