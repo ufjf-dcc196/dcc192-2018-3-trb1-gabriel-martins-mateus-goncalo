@@ -40,8 +40,9 @@ public class ParticipanteActivity extends AppCompatActivity {
         adapter.setOnClickListener(new ParticipanteAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                //deve aparecer a janela com os detalhes
-                Toast.makeText(ParticipanteActivity.this, "Oi", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ParticipanteActivity.this, ParticipanteInformacaoActivity.class);
+                intent.putExtra("participante", position);
+                startActivity(intent);
             }
         });
 
