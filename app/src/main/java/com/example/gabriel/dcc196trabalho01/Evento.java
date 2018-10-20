@@ -1,9 +1,11 @@
 package com.example.gabriel.dcc196trabalho01;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class Evento {
+public class Evento implements Serializable {
 
     private String nome;
     private String local;
@@ -23,7 +25,7 @@ public class Evento {
         this.dataEvento = dataEvento;
         this.facilitador = facilitador;
         this.descricao = descricao;
-        this.participanteList = participanteList;
+        this.participanteList = new ArrayList<>();
         this.numMaximoInscritos = numMaximoInscritos;
         this.numInscritos = numInscritos;
     }
@@ -58,5 +60,37 @@ public class Evento {
 
     public void setNumInscritos(Integer numInscritos) {
         this.numInscritos = numInscritos;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
+    public Calendar getDataEvento() {
+        return dataEvento;
+    }
+
+    public void setDataEvento(Calendar dataEvento) {
+        this.dataEvento = dataEvento;
+    }
+
+    public String getFacilitador() {
+        return facilitador;
+    }
+
+    public void setFacilitador(String facilitador) {
+        this.facilitador = facilitador;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

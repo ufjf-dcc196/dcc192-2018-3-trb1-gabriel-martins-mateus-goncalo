@@ -41,7 +41,8 @@ public class ParticipanteActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(ParticipanteActivity.this, ParticipanteInformacaoActivity.class);
-                intent.putExtra("participante", position);
+                Participante participante = (Participante) ModelDAO.getParticipanteInstance().get(position);
+                intent.putExtra("participante", participante);
                 startActivity(intent);
             }
         });

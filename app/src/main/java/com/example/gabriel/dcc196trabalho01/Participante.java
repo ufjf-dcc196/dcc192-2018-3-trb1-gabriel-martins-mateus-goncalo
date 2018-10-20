@@ -1,8 +1,9 @@
 package com.example.gabriel.dcc196trabalho01;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Participante {
+public class Participante implements Serializable {
 
     private String nome;
     private String email;
@@ -15,6 +16,9 @@ public class Participante {
         this.cpf = cpf;
         this.eventos = eventos;
     }
+
+    public Participante()
+    {}
 
     public String getNome() {
         return nome;

@@ -41,7 +41,10 @@ public class EventoActivity extends AppCompatActivity {
         adapter.setOnClickListener(new EventoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
+                Intent intent = new Intent(EventoActivity.this, EventoInformacaoActivity.class);
+                Evento e = (Evento) ModelDAO.getEventoInstance().get(position);
+                intent.putExtra("evento", e);
+                startActivity(intent);
             }
         });
 
@@ -49,7 +52,7 @@ public class EventoActivity extends AppCompatActivity {
 
         int total = ModelDAO.getEventoInstance().size();
 
-        txtTotalEventos.setText("Total de Participantes: " + total);
+        txtTotalEventos.setText("Total de Eventos: " + total);
 
 
         btnCadastrarEvento.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +71,6 @@ public class EventoActivity extends AppCompatActivity {
             int total = ModelDAO.getEventoInstance().size();
             txtTotalEventos.setText("Total de Eventos: " + total);
         }
-        super.onActivityResult(requestCode, resultCode, data);
         List<Evento> eventos = ModelDAO.getEventoInstance();
         EventoAdapter adapter = new EventoAdapter(eventos);
         rvListaEventos.setAdapter(adapter);
