@@ -116,7 +116,7 @@ public class ParticipanteInformacaoActivity extends AppCompatActivity {
             public void onParticipanteLongClick(View participanteView, int position) {
                 List<Participante> partis = new ArrayList<>();
                 Evento e = eventosInscritos.get(position);
-                e.setNumInscritos(eventosDisponiveis.get(position).getNumInscritos() - 1);
+                e.setNumInscritos(e.getNumInscritos() - 1);
                 for (int i = 0; i < e.getParticipanteList().size(); i++)
                 {
                     if (!e.getParticipanteList().get(i).getCpf().equals(participante.getCpf()))
@@ -125,7 +125,7 @@ public class ParticipanteInformacaoActivity extends AppCompatActivity {
                     }
                 }
                 e.setParticipanteList(partis);
-                List<Evento> eventosInscritos2 = new ArrayList<>();
+                List <Evento> eventosInscritos2 = new ArrayList<>();
                 for (int i = 0; i < eventosInscritos.size(); i++)
                 {
                     if (i != position)
@@ -133,10 +133,11 @@ public class ParticipanteInformacaoActivity extends AppCompatActivity {
                         eventosInscritos2.add(eventosInscritos.get(i));
                     }
                 }
-                participante.setEventos(eventosInscritos2);
-                adapter = new ParticipanteInformacaoAdapter(eventosInscritos2);
-                rvListaEventosInscrito.setAdapter(adapter);
-                List<Evento> eventosDisponiveis2 = new ArrayList<>();
+                eventosInscritos = eventosInscritos2;
+                participante.setEventos(eventosInscritos);
+                adapter.setEventos(eventosInscritos);
+                adapter.notifyDataSetChanged();
+                eventosDisponiveis = new ArrayList<>();
                 for (int i = 0; i < ModelDAO.getEventoInstance().size(); i++)
                 {
                     Boolean inserir = true;
@@ -149,11 +150,12 @@ public class ParticipanteInformacaoActivity extends AppCompatActivity {
                     }
                     if (inserir)
                     {
-                        eventosDisponiveis2.add(eventosTodos.get(i));
+                        eventosDisponiveis.add(eventosTodos.get(i));
                     }
                 }
-                adapter2 = new ParticipanteInformacaoAdapter(eventosDisponiveis2);
-                rvListaEventosNaoInscrito.setAdapter(adapter2);
+                adapter2.setEventos(eventosDisponiveis);
+                adapter2.notifyDataSetChanged();
+                return;
             }
         });
         rvListaEventosInscrito.setAdapter(adapter);
@@ -166,7 +168,7 @@ public class ParticipanteInformacaoActivity extends AppCompatActivity {
                     eventosDisponiveis.get(position).setNumInscritos(eventosDisponiveis.get(position).getNumInscritos() + 1);
                     participante.getEventos().add(eventosDisponiveis.get(position));
                     eventosDisponiveis.get(position).getParticipanteList().add(participante);
-                    List<Evento> eventosDisponiveis2 = new ArrayList<>();
+                    eventosDisponiveis = new ArrayList<>();
                     for (int i = 0; i < ModelDAO.getEventoInstance().size(); i++)
                     {
                         Boolean inserir = true;
@@ -179,18 +181,18 @@ public class ParticipanteInformacaoActivity extends AppCompatActivity {
                         }
                         if (inserir)
                         {
-                            eventosDisponiveis2.add(eventosTodos.get(i));
+                            eventosDisponiveis.add(eventosTodos.get(i));
                         }
                     }
-                    eventosDisponiveis = eventosDisponiveis2;
-                    adapter2 = new ParticipanteInformacaoAdapter(eventosDisponiveis2);
-                    rvListaEventosNaoInscrito.setAdapter(adapter2);
+                    adapter2.setEventos(eventosDisponiveis);
+                    adapter2.notifyDataSetChanged();
                     adapter.notifyDataSetChanged();
                 }
                 else
                 {
-
+                    // Colocar mensagem de evento cheio
                 }
+                return;
             }
         });
         rvListaEventosNaoInscrito.setAdapter(adapter2);
