@@ -7,17 +7,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParticipanteInformacaoActivity extends AppCompatActivity {
 
     private static final int REQUEST_EDITINFO = 1;
+
     private Participante participante;
 
     private Button btnEditarInformacoes;
@@ -28,6 +31,11 @@ public class ParticipanteInformacaoActivity extends AppCompatActivity {
     private TextView txtCPFParticipante;
     private TextView txtEventoCadastrados;
     private TextView txtEventosNaoCadastrados;
+    private ParticipanteInformacaoAdapter adapter;
+    private ParticipanteInformacaoAdapter adapter2;
+    private List<Evento> eventosInscritos;
+    private List<Evento> eventosTodos;
+    private List<Evento> eventosDisponiveis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +50,6 @@ public class ParticipanteInformacaoActivity extends AppCompatActivity {
         txtEventosNaoCadastrados = findViewById(R.id.txt_EventosDisponiveis2);
         rvListaEventosInscrito = (RecyclerView) findViewById(R.id.rv_ListaEventosCadastrados);
         rvListaEventosNaoInscrito = (RecyclerView) findViewById(R.id.rv_ListaEventosDisponíveis);
-
 
         Intent intent = getIntent();
         participante = (Participante) intent.getSerializableExtra("participante");
@@ -59,6 +66,134 @@ public class ParticipanteInformacaoActivity extends AppCompatActivity {
                 startActivityForResult(intent, ParticipanteInformacaoActivity.REQUEST_EDITINFO);
             }
         });
+
+        for (int i = 0; i < ModelDAO.getParticipanteInstance().size(); i++)
+        {
+            List<Participante> parts = ModelDAO.getParticipanteInstance();
+            if (parts.get(i).getCpf().equals(participante.getCpf()))
+            {
+                participante = parts.get(i);
+                break;
+            }
+        }
+
+        eventosInscritos = participante.getEventos();
+        eventosTodos = ModelDAO.getEventoInstance();
+
+        rvListaEventosInscrito.setLayoutManager(new LinearLayoutManager(this));
+        rvListaEventosNaoInscrito.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new ParticipanteInformacaoAdapter(eventosInscritos);
+        if (participante.getEventos().size() == 0)
+        {
+            adapter2 = new ParticipanteInformacaoAdapter(ModelDAO.getEventoInstance());
+            eventosDisponiveis = ModelDAO.getEventoInstance();
+        }
+        else
+        {
+            List<Evento> eventos3 = new ArrayList<>();
+            for (int i = 0; i < ModelDAO.getEventoInstance().size(); i++)
+            {
+                Boolean inserir = true;
+                for (int j = 0; j < participante.getEventos().size(); j++)
+                {
+                    if (eventosTodos.get(i).getNome().equals(participante.getEventos().get(j).getNome()))
+                    {
+                        inserir = false;
+                    }
+                }
+                if (inserir)
+                {
+                    eventos3.add(eventosTodos.get(i));
+                }
+            }
+            eventosDisponiveis = eventos3;
+            adapter2 = new ParticipanteInformacaoAdapter(eventosDisponiveis);
+        }
+
+        adapter.setOnParticipanteLongClickListener(new ParticipanteInformacaoAdapter.OnParticipanteLongClickListener() {
+            @Override
+            public void onParticipanteLongClick(View participanteView, int position) {
+                List<Participante> partis = new ArrayList<>();
+                Evento e = eventosInscritos.get(position);
+                e.setNumInscritos(eventosDisponiveis.get(position).getNumInscritos() - 1);
+                for (int i = 0; i < e.getParticipanteList().size(); i++)
+                {
+                    if (!e.getParticipanteList().get(i).getCpf().equals(participante.getCpf()))
+                    {
+                        partis.add(e.getParticipanteList().get(i));
+                    }
+                }
+                e.setParticipanteList(partis);
+                List<Evento> eventosInscritos2 = new ArrayList<>();
+                for (int i = 0; i < eventosInscritos.size(); i++)
+                {
+                    if (i != position)
+                    {
+                        eventosInscritos2.add(eventosInscritos.get(i));
+                    }
+                }
+                participante.setEventos(eventosInscritos2);
+                adapter = new ParticipanteInformacaoAdapter(eventosInscritos2);
+                rvListaEventosInscrito.setAdapter(adapter);
+                List<Evento> eventosDisponiveis2 = new ArrayList<>();
+                for (int i = 0; i < ModelDAO.getEventoInstance().size(); i++)
+                {
+                    Boolean inserir = true;
+                    for (int j = 0; j < participante.getEventos().size(); j++)
+                    {
+                        if (eventosTodos.get(i).getNome().equals(participante.getEventos().get(j).getNome()))
+                        {
+                            inserir = false;
+                        }
+                    }
+                    if (inserir)
+                    {
+                        eventosDisponiveis2.add(eventosTodos.get(i));
+                    }
+                }
+                adapter2 = new ParticipanteInformacaoAdapter(eventosDisponiveis2);
+                rvListaEventosNaoInscrito.setAdapter(adapter2);
+            }
+        });
+        rvListaEventosInscrito.setAdapter(adapter);
+
+        adapter2.setOnParticipanteLongClickListener(new ParticipanteInformacaoAdapter.OnParticipanteLongClickListener() {
+            @Override
+            public void onParticipanteLongClick(View participanteView, int position) {
+                if (eventosDisponiveis.get(position).getNumInscritos()+1 <= eventosDisponiveis.get(position).getNumMaximoInscritos())
+                {
+                    eventosDisponiveis.get(position).setNumInscritos(eventosDisponiveis.get(position).getNumInscritos() + 1);
+                    participante.getEventos().add(eventosDisponiveis.get(position));
+                    eventosDisponiveis.get(position).getParticipanteList().add(participante);
+                    List<Evento> eventosDisponiveis2 = new ArrayList<>();
+                    for (int i = 0; i < ModelDAO.getEventoInstance().size(); i++)
+                    {
+                        Boolean inserir = true;
+                        for (int j = 0; j < participante.getEventos().size(); j++)
+                        {
+                            if (eventosTodos.get(i).getNome().equals(participante.getEventos().get(j).getNome()))
+                            {
+                                inserir = false;
+                            }
+                        }
+                        if (inserir)
+                        {
+                            eventosDisponiveis2.add(eventosTodos.get(i));
+                        }
+                    }
+                    eventosDisponiveis = eventosDisponiveis2;
+                    adapter2 = new ParticipanteInformacaoAdapter(eventosDisponiveis2);
+                    rvListaEventosNaoInscrito.setAdapter(adapter2);
+                    adapter.notifyDataSetChanged();
+                }
+                else
+                {
+
+                }
+            }
+        });
+        rvListaEventosNaoInscrito.setAdapter(adapter2);
     }
 
     @Override

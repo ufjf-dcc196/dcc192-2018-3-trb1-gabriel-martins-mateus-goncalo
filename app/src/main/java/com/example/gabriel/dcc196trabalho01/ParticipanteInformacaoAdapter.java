@@ -10,78 +10,109 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ParticipanteInformacaoAdapter extends RecyclerView.Adapter<ParticipanteInformacaoAdapter.ViewHolder>{
+class ParticipanteInformacaoAdapter extends RecyclerView.Adapter<ParticipanteInformacaoAdapter.ViewHolder>{
 
-    private List<Evento> eventoList;
-    private OnLongClickListener listener;
+    private List<Evento> eventos;
+    private OnParticipanteClickListener listener;
+    private OnParticipanteLongClickListener longListener;
 
-    public interface OnLongClickListener{
-        void onLongClickListener(View view, int position);
+    public interface OnParticipanteClickListener {
+        void onParticipanteClick(View participanteView, int position);
+    }
+    public interface OnParticipanteLongClickListener {
+        void onParticipanteLongClick(View participanteView, int position);
     }
 
-    public void setOnLongClickListener(OnLongClickListener listener)
-    {
+    public List<Evento> getEventos() {
+        return eventos;
+    }
+
+    public void setEventos(List<Evento> eventos) {
+        this.eventos = eventos;
+    }
+
+    public void setOnParticipanteClickListener(OnParticipanteClickListener listener){
         this.listener = listener;
     }
+    public void setOnParticipanteLongClickListener(OnParticipanteLongClickListener listener){
+        this.longListener = listener;
+    }
 
-    public ParticipanteInformacaoAdapter (List<Evento> eventos)
-    {
-        this.eventoList = eventos;
+    public ParticipanteInformacaoAdapter(List<Evento> eventos){
+        this.eventos = eventos;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        Context context = viewGroup.getContext();
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View eventoView = inflater.inflate(R.layout.eventos_layout, viewGroup, false);
-        ViewHolder viewHolder = new ViewHolder(eventoView);
-        return viewHolder;
+        View livroView = inflater.inflate(R.layout.eventos_layout, parent, false);
+        ViewHolder holder = new ViewHolder(livroView);
+        return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.nomeEvento.setText(eventoList.get(i).getNome());
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.txtNomeEvento.setText(eventos.get(position).getNome());
     }
 
     @Override
     public int getItemCount() {
-        return eventoList.size();
+        return eventos.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener
-    {
-        public TextView nomeEvento;
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        public TextView txtNomeEvento;
 
-        public ViewHolder (final View eventoView)
-        {
-            super(eventoView);
-            nomeEvento = (TextView)eventoView.findViewById(R.id.txtEventoNome);
-            eventoView.setOnLongClickListener(new View.OnLongClickListener() {
+        public ViewHolder(final View itemView) {
+            super(itemView);
+            txtNomeEvento = itemView.findViewById(R.id.txtEventoNome);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null){
+                        int position = getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION){
+                            listener.onParticipanteClick(itemView, position);
+                        }
+                    }
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    if (listener != null) {
+                    if(longListener!=null){
                         int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            listener.onLongClickListener(eventoView, position);
+                        if(position!=RecyclerView.NO_POSITION){
+                            longListener.onParticipanteLongClick(itemView, position);
+                            return true;
                         }
                     }
                     return false;
                 }
             });
-
         }
 
         @Override
-        public boolean onLongClick(View v) {
-            int position = getAdapterPosition();
-            if (position != RecyclerView.NO_POSITION)
-            {
-                listener.onLongClickListener(v, position);
+        public void onClick(View v) {
+            if(listener!=null){
+                int position = getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION){
+                    listener.onParticipanteClick(v, position);
+                }
             }
-            return true;
+        }
+        @Override
+        public boolean onLongClick(View v) {
+            if(longListener!=null){
+                int position = getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION){
+                    longListener.onParticipanteLongClick(v, position);
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
-
-

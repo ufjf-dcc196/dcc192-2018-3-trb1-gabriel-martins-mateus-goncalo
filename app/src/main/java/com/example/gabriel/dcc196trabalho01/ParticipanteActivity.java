@@ -23,6 +23,7 @@ public class ParticipanteActivity extends AppCompatActivity {
     private Button btnCadastrarParticipante;
     private RecyclerView rvListaParticipantes;
     private TextView txtTotalParticipantes;
+    private ParticipanteAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class ParticipanteActivity extends AppCompatActivity {
         rvListaParticipantes.setLayoutManager(new LinearLayoutManager(this));
         rvListaParticipantes.setAdapter(new ParticipanteAdapter(ModelDAO.getParticipanteInstance()));
 
-        final ParticipanteAdapter adapter = new ParticipanteAdapter(ModelDAO.getParticipanteInstance());
+        adapter = new ParticipanteAdapter(ModelDAO.getParticipanteInstance());
         adapter.setOnClickListener(new ParticipanteAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -68,9 +69,6 @@ public class ParticipanteActivity extends AppCompatActivity {
             int total = ModelDAO.getParticipanteInstance().size();
             txtTotalParticipantes.setText("Total de Participantes: " + total);
         }
-        List<Participante> participantes = ModelDAO.getParticipanteInstance();
-        ParticipanteAdapter adapter = new ParticipanteAdapter(participantes);
-        rvListaParticipantes.setAdapter(adapter);
-        rvListaParticipantes.setLayoutManager(new LinearLayoutManager(this));
+        adapter.notifyDataSetChanged();
     }
 }

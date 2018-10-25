@@ -21,6 +21,7 @@ public class EventoActivity extends AppCompatActivity {
     private Button btnCadastrarEvento;
     private RecyclerView rvListaEventos;
     private TextView txtTotalEventos;
+    private EventoAdapter adapter;
 
     private int totalEventos = 0;
 
@@ -37,7 +38,7 @@ public class EventoActivity extends AppCompatActivity {
         rvListaEventos.setLayoutManager(new LinearLayoutManager(this));
         rvListaEventos.setAdapter(new EventoAdapter(ModelDAO.getEventoInstance()));
 
-        final EventoAdapter adapter = new EventoAdapter(ModelDAO.getEventoInstance());
+        adapter = new EventoAdapter(ModelDAO.getEventoInstance());
         adapter.setOnClickListener(new EventoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -47,7 +48,6 @@ public class EventoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         rvListaEventos.setAdapter(adapter);
 
         int total = ModelDAO.getEventoInstance().size();
@@ -71,9 +71,6 @@ public class EventoActivity extends AppCompatActivity {
             int total = ModelDAO.getEventoInstance().size();
             txtTotalEventos.setText("Total de Eventos: " + total);
         }
-        List<Evento> eventos = ModelDAO.getEventoInstance();
-        EventoAdapter adapter = new EventoAdapter(eventos);
-        rvListaEventos.setAdapter(adapter);
-        rvListaEventos.setLayoutManager(new LinearLayoutManager(this));
+        adapter.notifyDataSetChanged();
     }
 }

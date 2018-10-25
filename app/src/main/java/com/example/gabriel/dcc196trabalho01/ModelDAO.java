@@ -17,7 +17,7 @@ public class ModelDAO {
         {
             participanteList = new ArrayList<Participante>();
             Participante p1 = new Participante("Mateus", "mateusgon57@gmail.com", "00000000000", null);
-            Participante p2 = new Participante("Gabriel", "gabrielmsanta97@gmail.com", "00000000000", null);
+            Participante p2 = new Participante("Gabriel", "gabrielmsanta97@gmail.com", "00123456789", null);
             participanteList.add(p1);
             participanteList.add(p2);
         }
