@@ -190,7 +190,7 @@ public class ParticipanteInformacaoActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    // Colocar mensagem de evento cheio
+                    Toast.makeText(getApplicationContext(), "Evento já está lotado", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
