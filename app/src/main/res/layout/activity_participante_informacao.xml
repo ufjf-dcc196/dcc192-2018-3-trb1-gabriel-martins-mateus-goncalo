@@ -17,12 +17,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Lista de eventos disponíveis"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.642"
+        app:layout_constraintVertical_bias="0.652"
         tools:text="@string/eventosDisponiveis" />
 
     <TextView
@@ -36,9 +37,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Lista de eventos cadastrados"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.231"
@@ -89,10 +91,10 @@
         android:text="Editar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.928"
+        app:layout_constraintHorizontal_bias="0.974"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.053"
+        app:layout_constraintVertical_bias="0.125"
         tools:text="@string/btnEdtInfo" />
 
     <TextView
