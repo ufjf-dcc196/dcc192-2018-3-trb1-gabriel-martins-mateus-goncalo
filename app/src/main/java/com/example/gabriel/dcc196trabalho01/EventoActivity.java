@@ -2,6 +2,8 @@ package com.example.gabriel.dcc196trabalho01;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ public class EventoActivity extends AppCompatActivity {
     private RecyclerView rvListaEventos;
     private TextView txtTotalEventos;
     private EventoAdapter adapter;
+    private EventoDbHelper dbHelper;
 
     private int totalEventos = 0;
 
@@ -30,27 +33,33 @@ public class EventoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evento);
 
+        dbHelper = new EventoDbHelper(getApplicationContext());
+
         btnCadastrarEvento = findViewById(R.id.btn_cadastrarEvento);
         rvListaEventos = findViewById(R.id.rv_listaEventos);
         txtTotalEventos = findViewById(R.id.txt_totalEventos);
 
         rvListaEventos = (RecyclerView) findViewById(R.id.rv_listaEventos);
         rvListaEventos.setLayoutManager(new LinearLayoutManager(this));
-        rvListaEventos.setAdapter(new EventoAdapter(ModelDAO.getEventoInstance()));
+        rvListaEventos.setAdapter(new EventoAdapter(getEventos()));
 
-        adapter = new EventoAdapter(ModelDAO.getEventoInstance());
+        adapter = new EventoAdapter(getEventos());
+
         adapter.setOnClickListener(new EventoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+
                 Intent intent = new Intent(EventoActivity.this, EventoInformacaoActivity.class);
-                Evento e = (Evento) ModelDAO.getEventoInstance().get(position);
-                intent.putExtra("evento", e);
+                Integer registroEvento = position;
+                intent.putExtra("position", registroEvento);
                 startActivity(intent);
+
             }
         });
+
         rvListaEventos.setAdapter(adapter);
 
-        int total = ModelDAO.getEventoInstance().size();
+        int total = getEventos().getCount();
 
         txtTotalEventos.setText("Total de Eventos: " + total);
 
@@ -68,9 +77,20 @@ public class EventoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == EventoActivity.REQUEST_CADEVENTO && resultCode == Activity.RESULT_OK){
-            int total = ModelDAO.getEventoInstance().size();
+            int total = getEventos().getCount();
             txtTotalEventos.setText("Total de Eventos: " + total);
         }
-        adapter.notifyDataSetChanged();
+        adapter.setCursor(getEventos());
+    }
+
+    private Cursor getEventos()
+    {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String []visao = {
+                AppContract.Evento.COLUMN_NAME_REGISTRO,
+                AppContract.Evento.COLUMN_NAME_NOME,
+        };
+        String sort = AppContract.Evento.COLUMN_NAME_NOME+ " ASC";
+        return db.query(AppContract.Evento.TABLE_NAME, visao,null,null,null,null, sort);
     }
 }
